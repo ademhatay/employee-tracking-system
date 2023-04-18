@@ -15,7 +15,7 @@ const RegisterScreen: FC = () => {
 			<title>Register - {settings.titleDash}</title>
 			<link rel="canonical" href={settings.siteURL} />
 		</Helmet>
-		<div className='w-screen h-screen bg-color-1 flex flex-col  pb-10'>
+		<div className='w-screen min-h-screen bg-color-1 flex flex-col pb-10 md:pb-0'>
 			<div className='wrapper flex flex-1 items-center justify-center'>
 				<h1 className='text-white font-bold text-3xl md:text-4xl lg:text-5xl text-center'>
 					Employee Management System - Register
@@ -77,10 +77,10 @@ const RegisterScreen: FC = () => {
 						<Button className='col-span-2 bg-color-3 hover:bg-color-4 text-base md:text-lg font-medium mt-4 mb-5'>Register</Button>
 					</div>
 				</form>
-				{/* <div>
+				<div>
 					<p className='text-white font-medium text-base md:text-lg mb-3 tracking-wider'>Already have an account?</p>
 					<Button onClick={() => navigate("/login")} className='w-full bg-color-3 hover:bg-color-4 text-base md:text-lg font-medium'>Login</Button>
-				</div> */}
+				</div>
 			</div>
 		</div>
 	</>
