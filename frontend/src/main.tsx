@@ -1,23 +1,26 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import WelcomeScreen from './pages/WelcomeScreen'
+import { Welcome, Login, Register } from './pages'
+
 
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <WelcomeScreen />,
+		element: <Welcome />,
 	},
 	{
-		path: "/login",
-		element: <>LOGİN</>
+		path: "login",
+		element: <Login />,
 	},
 	{
-		path: "/register",
-		element: <>REGISTER</>
+		path: "register",
+		element: <Register />,
+	},
+	{
+		path: "home",
+		element: <>HOME</>,
 	},
 ]);
 
