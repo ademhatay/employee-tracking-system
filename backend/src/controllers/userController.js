@@ -64,7 +64,7 @@ const loginUser = async (req, res) => {
 
 		const token = generateToken(email);
 		res.cookie('token', token, { httpOnly: true });
-		res.status(200).send('Logged In Successfully');
+		res.status(200).json({ message: "Logged In Successfully", user, token })
 	} catch (err) {
 		console.error(err);
 		res.status(500).send('Internal Server Error');
