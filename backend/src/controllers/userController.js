@@ -50,7 +50,7 @@ const loginUser = async (req, res) => {
 		const { rows } = await pool.query(query, values);
 
 		if (rows.length === 0) {
-			res.status(401).send('Invalid Email or Password');
+			res.status(401).json({ message: "Invalid Email or Password" });
 			return;
 		}
 
@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
 		const match = await bcrypt.compare(password, user.password);
 
 		if (!match) {
-			res.status(401).send('Invalid Email or Password');
+			res.status(401).json({ message: "Invalid Email or Password" });
 			return;
 		}
 
@@ -67,7 +67,7 @@ const loginUser = async (req, res) => {
 		res.status(200).json({ message: "Logged In Successfully", user, token })
 	} catch (err) {
 		console.error(err);
-		res.status(500).send('Internal Server Error');
+		res.status(500).json({ message: "Internal Server Error" });
 	}
 };
 
