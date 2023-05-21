@@ -4,7 +4,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Welcome, Login, Register } from './pages'
 
 
-
 const router = createBrowserRouter([
 	{
 		path: "/",
