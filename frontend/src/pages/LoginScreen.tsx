@@ -10,6 +10,33 @@ const LoginScreen: FC = () => {
 	const navigate = useNavigate();
 
 
+	const [email, setEmail] = useState<string>("")
+	const [password, setPassword] = useState<string>("")
+
+	const handleLogin = async (e: any) => {
+		e.preventDefault()
+		const res = await fetch("http://localhost:5000/api/users/login", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				'Accept': 'application/json'
+			},
+			body: JSON.stringify({ email, password })
+		})
+		const data = await res.json()
+		try {
+			if (data.token) {
+				localStorage.setItem("user", data)
+				navigate("/home")
+			} else {
+				alert(data.message)
+			}
+		} catch (error) {
+			alert(error)
+		}
+	}
+
+
 	return <>
 		<Helmet>
 			<meta charSet="utf-8" />
@@ -26,14 +53,22 @@ const LoginScreen: FC = () => {
 				<form className='w-8/12 md:6/12 lg:w-5/12'>
 					<div className='flex flex-col my-5'>
 						<label className='text-white font-medium text-base md:text-lg mb-1'>Email</label>
-						<input className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none' type='email' autoComplete='off' />
+						<input
+							onChange={(e) => setEmail(e.target.value)}
+							className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none'
+							type='email'
+							autoComplete='off' />
 					</div>
 					<div className='flex flex-col my-5'>
 						<label className='text-white font-medium text-base md:text-lg mb-1'>Password</label>
-						<input className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none' type='password' autoComplete='off' />
+						<input
+							onChange={(e) => setPassword(e.target.value)}
+							className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none'
+							type='password'
+							autoComplete='off' />
 					</div>
 					<div className='flex flex-col my-5'>
-						<Button onClick={() => navigate("/home")} className='w-full bg-color-3 hover:bg-color-4 text-lg md:text-xl font-medium'>Login</Button>
+						<Button onClick={handleLogin} className='w-full bg-color-3 hover:bg-color-4 text-lg md:text-xl font-medium'>Login</Button>
 					</div>
 				</form>
 				<div>
