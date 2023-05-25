@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import settings from '../constants/settings';
 
-
 const LoginScreen: FC = () => {
 
 	const navigate = useNavigate();
