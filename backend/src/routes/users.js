@@ -3,7 +3,7 @@ const pool = require('../config/db');
 
 const router = express.Router();
 
-const { getALLUsers, createUser, loginUser } = require('../controllers/userController');
+const { getALLUsers, createUser, loginUser, deleteUser } = require('../controllers/userController');
 
 /* @route   GET api/users, POST api/users
  * @desc    Get all users, Create a user
@@ -11,6 +11,8 @@ const { getALLUsers, createUser, loginUser } = require('../controllers/userContr
 router.get('/', getALLUsers).post('/', createUser);
 
 router.post('/login', loginUser);
+
+router.delete('/:id', deleteUser);
 
 
 

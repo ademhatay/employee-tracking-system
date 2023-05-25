@@ -87,8 +87,25 @@ const loginUser = async (req, res) => {
 	}
 };
 
+
+const deleteUser = async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		const { rows } = await pool.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
+		res.json({ message: "User Deleted Successfully", user: rows[0] });
+	}
+	catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+}
+
+
+
 module.exports = {
 	getALLUsers,
 	createUser,
-	loginUser
+	loginUser,
+	deleteUser
 };
