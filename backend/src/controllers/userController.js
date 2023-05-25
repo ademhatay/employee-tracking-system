@@ -26,13 +26,29 @@ const createUser = async (req, res) => {
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 		RETURNING *
 	  `;
+
+
+
 		const values = [first_name, last_name, email, hashed_password, birthdate, role, occupation, task_list, hire_date];
 
+		if (values[6] === '1') {
+			values[6] = 'Developer';
+		} else if (values[6] === '2') {
+			values[6] = 'Designer';
+		} else if (values[6] === '3') {
+			values[6] = 'Manager';
+		} else {
+			values[6] = 'Other';
+		}
+
 		const { rows } = await pool.query(query, values);
-		res.status(201).json(rows[0]);
+		res.status(201).json({
+			message: "User Created Successfully",
+			user: rows[0],
+		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).send('Internal Server Error');
+		res.status(500).json({ message: "Internal Server Error" });
 	}
 };
 
