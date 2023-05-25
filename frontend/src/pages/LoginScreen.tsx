@@ -3,38 +3,46 @@ import Button from '../components/AppButton'
 import { useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import settings from '../constants/settings';
+import { loginSchema } from './validations';
+import { useFormik } from 'formik';
 
 const LoginScreen: FC = () => {
 
 	const navigate = useNavigate();
 
-
-	const [email, setEmail] = useState<string>("")
-	const [password, setPassword] = useState<string>("")
-
-	const handleLogin = async (e: any) => {
-		e.preventDefault()
+	const login = async (values: any) => {
 		const res = await fetch("http://localhost:5000/api/users/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				'Accept': 'application/json'
 			},
-			body: JSON.stringify({ email, password })
+			body: JSON.stringify(values)
 		})
 		const data = await res.json()
 		try {
-			if (data.token) {
-				localStorage.setItem("user", data)
+			if (data.user) {
+				localStorage.setItem("user", JSON.stringify(data.user))
 				navigate("/home")
 			} else {
-				alert(data.message)
+				console.log(data);
 			}
 		} catch (error) {
 			alert(error)
 		}
 	}
 
+
+	const { handleChange, handleSubmit, handleBlur, values, isSubmitting, errors, touched } = useFormik({
+		initialValues: {
+			email: "",
+			password: "",
+		},
+		onSubmit: async (values, { resetForm, setErrors }) => {
+			login(values);
+		},
+		validationSchema: loginSchema
+	});
 
 	return <>
 		<Helmet>
@@ -49,30 +57,46 @@ const LoginScreen: FC = () => {
 				</h1>
 			</div>
 			<div className='wrapper flex flex-[3] items-center justify-start flex-col'>
-				<form className='w-8/12 md:6/12 lg:w-5/12'>
+				<form onSubmit={handleSubmit} className='w-8/12 md:6/12 lg:w-5/12'>
 					<div className='flex flex-col my-5'>
 						<label className='text-white font-medium text-base md:text-lg mb-1'>Email</label>
 						<input
-							onChange={(e) => setEmail(e.target.value)}
+							value={values.email}
+							onChange={handleChange('email')}
+							disabled={isSubmitting}
+							onBlur={handleBlur('email')}
 							className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none'
 							type='email'
 							autoComplete='off' />
+							{
+								errors.email && touched.email && (
+									<div className='text-red-500 text-sm font-medium'>{errors.email}</div>
+								)
+							}
 					</div>
 					<div className='flex flex-col my-5'>
 						<label className='text-white font-medium text-base md:text-lg mb-1'>Password</label>
 						<input
-							onChange={(e) => setPassword(e.target.value)}
+							value={values.password}
+							onChange={handleChange('password')}
+							disabled={isSubmitting}
+							onBlur={handleBlur('password')}
 							className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none'
 							type='password'
 							autoComplete='off' />
+							{
+								errors.password && touched.password && (
+									<div className='text-red-500 text-sm font-medium'>{errors.password}</div>
+								)
+							}
 					</div>
 					<div className='flex flex-col my-5'>
-						<Button onClick={handleLogin} className='w-full bg-color-3 hover:bg-color-4 text-lg md:text-xl font-medium'>Login</Button>
+						<Button onClick={() => handleSubmit} className='w-full bg-color-3 hover:bg-color-4 text-lg md:text-xl font-medium'>Login</Button>
 					</div>
 				</form>
 				<div>
 					<p className='text-white font-medium text-base md:text-lg mb-3 tracking-wider'>Don't have an account?</p>
-					<Button onClick={() => navigate("/register")} className='w-full bg-color-3 hover:bg-color-4 text-base md:text-lg font-medium'>Create Account</Button>
+					<Button type="submit" className='w-full bg-color-3 hover:bg-color-4 text-base md:text-lg font-medium'>Create Account</Button>
 				</div>
 			</div>
 		</div>

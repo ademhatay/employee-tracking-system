@@ -3,7 +3,7 @@ import Button from '../components/AppButton'
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import settings from '../constants/settings';
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { registerSchema } from './validations';
 
 const RegisterScreen: FC = () => {
