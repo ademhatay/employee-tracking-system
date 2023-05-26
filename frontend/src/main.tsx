@@ -1,8 +1,9 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Welcome, Login, Register } from './pages'
-
+import { Welcome, Login, Register, Home } from './pages'
+import { Provider } from 'react-redux'
+import store from './store/store'
 
 const router = createBrowserRouter([
 	{
@@ -19,13 +20,15 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "home",
-		element: <>HOME</>,
+		element: <Home />,
 	},
 ]);
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<>
-		<RouterProvider router={router} />
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
 	</>
 )

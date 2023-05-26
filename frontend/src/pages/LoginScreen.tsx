@@ -1,36 +1,25 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Button from '../components/AppButton'
 import { useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import settings from '../constants/settings';
 import { loginSchema } from './validations';
 import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../store/slices/UserSlice';
+import useIsLogin from '../hooks/isLogin';
 
 const LoginScreen: FC = () => {
 
 	const navigate = useNavigate();
 
-	const login = async (values: any) => {
-		const res = await fetch("http://localhost:5000/api/users/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				'Accept': 'application/json'
-			},
-			body: JSON.stringify(values)
-		})
-		const data = await res.json()
-		try {
-			if (data.user) {
-				localStorage.setItem("user", JSON.stringify(data.user))
-				navigate("/home")
-			} else {
-				console.log(data);
-			}
-		} catch (error) {
-			alert(error)
-		}
-	}
+
+	const dispatch = useDispatch<any>();
+
+	const { user } = useSelector((state: any) => state.user);
+
+	useIsLogin(user);
+
 
 
 	const { handleChange, handleSubmit, handleBlur, values, isSubmitting, errors, touched } = useFormik({
@@ -39,7 +28,7 @@ const LoginScreen: FC = () => {
 			password: "",
 		},
 		onSubmit: async (values, { resetForm, setErrors }) => {
-			login(values);
+			dispatch(loginUser(values));
 		},
 		validationSchema: loginSchema
 	});
@@ -68,11 +57,11 @@ const LoginScreen: FC = () => {
 							className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none'
 							type='email'
 							autoComplete='off' />
-							{
-								errors.email && touched.email && (
-									<div className='text-red-500 text-sm font-medium'>{errors.email}</div>
-								)
-							}
+						{
+							errors.email && touched.email && (
+								<div className='text-red-500 text-sm font-medium'>{errors.email}</div>
+							)
+						}
 					</div>
 					<div className='flex flex-col my-5'>
 						<label className='text-white font-medium text-base md:text-lg mb-1'>Password</label>
@@ -84,11 +73,11 @@ const LoginScreen: FC = () => {
 							className='bg-white text-color-6 text-lg md:text-xl font-medium rounded-md p-2 border-0 outline-none'
 							type='password'
 							autoComplete='off' />
-							{
-								errors.password && touched.password && (
-									<div className='text-red-500 text-sm font-medium'>{errors.password}</div>
-								)
-							}
+						{
+							errors.password && touched.password && (
+								<div className='text-red-500 text-sm font-medium'>{errors.password}</div>
+							)
+						}
 					</div>
 					<div className='flex flex-col my-5'>
 						<Button onClick={() => handleSubmit} className='w-full bg-color-3 hover:bg-color-4 text-lg md:text-xl font-medium'>Login</Button>
@@ -96,7 +85,7 @@ const LoginScreen: FC = () => {
 				</form>
 				<div>
 					<p className='text-white font-medium text-base md:text-lg mb-3 tracking-wider'>Don't have an account?</p>
-					<Button type="submit" className='w-full bg-color-3 hover:bg-color-4 text-base md:text-lg font-medium'>Create Account</Button>
+					<Button onClick={() => navigate('/register')} className='w-full bg-color-3 hover:bg-color-4 text-base md:text-lg font-medium'>Create Account</Button>
 				</div>
 			</div>
 		</div>

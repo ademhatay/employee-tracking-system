@@ -10,6 +10,7 @@ const RegisterScreen: FC = () => {
 
 	const navigate = useNavigate();
 
+
 	const register = async (values: any) => {
 		const res = await fetch("http://localhost:5000/api/users", {
 			method: "POST",

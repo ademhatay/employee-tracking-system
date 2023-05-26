@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import settings from '../constants/settings';
 
-
 const WelcomeScreen: FC = () => {
 
 	const navigate = useNavigate();
-
 	return <>
 		<Helmet>
 			<meta charSet="utf-8" />
@@ -25,7 +23,7 @@ const WelcomeScreen: FC = () => {
 			<div className='wrapper flex flex-1 pb-10 flex-col md:flex-row'>
 				<div className='flex flex-1 justify-center'>
 					<Button onClick={() => navigate("/login")} className='w-10/12 bg-color-3 hover:bg-color-4 text-2xl md:text-5xl font-medium border-b-2 rounded-none rounded-t-md'>
-					Login 
+						Login
 					</Button>
 				</div>
 				<div className='flex flex-1 justify-center'>
